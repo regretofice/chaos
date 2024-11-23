@@ -16,8 +16,6 @@ init_Data = [
     5.414,  ## Drive angular velocity  omega
 ]
 
-current_data = init_Data
-
 # 初始化参数
 params_init = {
     "k_1": (2.029, 2, 3),
@@ -42,12 +40,12 @@ params_pos = {
 
 # 更新参数并持久化，然后调用 update_plot 更新图表
 def update_data(param_name: str, current_param_value: float):
-    global current_data # 全局变量修改
-    current_data = init_Data # 重置
+    current_data = init_Data.copy() # 重置
     current_data[params_pos[param_name]] = current_param_value # 将相应参数变更为对应值
-    update_plot()
+    print(current_data)
+    update_plot(current_data)
 
-def update_plot():
+def update_plot(current_data):
     g = 9.81
     dt = 0.00001
     x_0 = 0
@@ -141,6 +139,8 @@ button1.on_clicked(last_mode)
 button2.on_clicked(next_mode)
 
 
-slider_selector
+update_plot(init_Data)
 # 显示图形
+plt.draw()
 plt.show()
+plt.pause(1000)

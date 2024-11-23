@@ -38,7 +38,7 @@ class SliderSelector:
         self.remove_slider()  # 移除已有的滑动条
         # 重新创建 Axes
         self.axmodel = self.fig.add_axes(self.axmodel_rect)  
-        valmin, valmax, valinit = self.params[param_name]
+        valinit, valmin, valmax = self.params[param_name]
         self.current_slider = Slider(
             ax=self.axmodel,
             # 映射为全名
