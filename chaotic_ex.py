@@ -42,7 +42,6 @@ params_pos = {
 def update_data(param_name: str, current_param_value: float):
     current_data = init_Data.copy() # 重置
     current_data[params_pos[param_name]] = current_param_value # 将相应参数变更为对应值
-    print(current_data)
     update_plot(current_data)
 
 def update_plot(current_data):
@@ -54,7 +53,7 @@ def update_plot(current_data):
     L_bc0 = 0.107
     L_ab = 0.053
     L_ac = 0.161
-    r = 0.04
+    r = 0.0145
     theta = 1.36
     
     def I(R, M):
@@ -62,15 +61,16 @@ def update_plot(current_data):
 
     def M(m, l):
         return m * g * l
-
-    # current_data 已经是修改过后的了
-    # data[mode] = slider_selector.val()
+    
     k_1, k_2, M_disk, R_disk, gamma, M_Cu, L_Cu, omiga = current_data[1:9]
-    I_disk = I(R_disk, M_disk)
-    I_Cu = M(M_Cu, L_Cu)
+    # I_disk = I(R_disk, M_disk)
+    # I_Cu = M(M_Cu, L_Cu)
+    I_Cu = 0.006997
+    I_disk = 0.0001701
     xdata = []
     ydata = []
-    for j in range(0, 1000):
+    for j in range(0, 2000000):
+        #2000000
         x_0 += y_0 * dt
         y_0 += (
             (
@@ -83,12 +83,15 @@ def update_plot(current_data):
             * dt
             / I_disk
         )
-        z_0 += dt * omiga
+        z_0 -= dt * omiga
+        #++-
+        #--+
         xdata.append(x_0)
         ydata.append(y_0)
     line.set_xdata(xdata)
     line.set_ydata(ydata)
     ax.set_ylim(np.min(ydata), np.max(ydata))
+    ax.set_xlim(np.min(xdata), np.max(xdata))
     fig.canvas.draw_idle()
 
 
@@ -143,4 +146,4 @@ update_plot(init_Data)
 # 显示图形
 plt.draw()
 plt.show()
-plt.pause(1000)
+# plt.pause(1000)
